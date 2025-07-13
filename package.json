@@ -1,0 +1,35 @@
+{
+    "name": "@iamshubhankarkhare/cursor-review-cli",
+    "version": "1.0.0",
+    "description": "AI-powered code review CLI for Cursor IDE",
+    "main": "src/index.js",
+    "bin": {
+      "cursor-review": "./src/index.js"
+    },
+    "scripts": {
+      "start": "node src/index.js",
+      "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": ["cursor", "ai", "code-review", "cli"],
+    "author": "Shubhankar Khare",
+    "license": "MIT",
+    "files": [
+      "src/",
+      "rules/",
+      "README.md"
+    ],
+    "dependencies": {
+      "chalk": "^5.3.0",
+      "boxen": "^7.1.1",
+      "figlet": "^1.7.0",
+      "gradient-string": "^2.0.2",
+      "ora": "^8.0.1",
+      "inquirer": "^9.2.12",
+      "commander": "^11.1.0",
+      "simple-git": "^3.20.0",
+      "axios": "^1.6.2"
+    },
+    "engines": {
+      "node": ">=16.0.0"
+    }
+  }
