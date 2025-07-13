@@ -1,12 +1,61 @@
 const axios = require('axios');
+const fs = require('fs');
+const path = require('path');
 const { getCurrentCommitHash } = require('./git');
 
+// Load environment variables from multiple sources
+function loadEnvVariables() {
+  const envFiles = ['.env', '.env.local', '.env.development', '.env.production'];
+  
+  for (const envFile of envFiles) {
+    if (fs.existsSync(envFile)) {
+      const envContent = fs.readFileSync(envFile, 'utf8');
+      const lines = envContent.split('\n');
+      
+      for (const line of lines) {
+        const [key, value] = line.split('=');
+        if (key && value && key.trim() === 'GITHUB_TOKEN') {
+          process.env.GITHUB_TOKEN = value.trim().replace(/['"]/g, '');
+          console.log(`Found GITHUB_TOKEN in ${envFile}`);
+          return;
+        }
+      }
+    }
+  }
+  
+  // Check .npmrc for GitHub token
+  const npmrcPath = path.join(process.env.HOME || process.env.USERPROFILE, '.npmrc');
+  if (fs.existsSync(npmrcPath)) {
+    const npmrcContent = fs.readFileSync(npmrcPath, 'utf8');
+    const lines = npmrcContent.split('\n');
+    
+    for (const line of lines) {
+      if (line.includes('//npm.pkg.github.com/:_authToken=')) {
+        const token = line.split('=')[1];
+        if (token) {
+          process.env.GITHUB_TOKEN = token.trim();
+          console.log('Found GITHUB_TOKEN in .npmrc');
+          return;
+        }
+      }
+    }
+  }
+}
+
 async function postToGitHub(reviewState) {
+  // Load environment variables
+  loadEnvVariables();
+  
   const token = process.env.GITHUB_TOKEN;
   const repo = process.env.GITHUB_REPOSITORY || 'atlanhq/atlan-frontend';
   
   if (!token) {
-    throw new Error('GITHUB_TOKEN environment variable is required');
+    throw new Error(`GITHUB_TOKEN not found. Please add it to one of these files:
+    - .env
+    - .env.local  
+    - .env.development
+    - .env.production
+    - ~/.npmrc (as //npm.pkg.github.com/:_authToken=TOKEN)`);
   }
   
   const [owner, repoName] = repo.split('/');

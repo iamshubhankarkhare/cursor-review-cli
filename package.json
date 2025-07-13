@@ -1,6 +1,6 @@
 {
     "name": "@iamshubhankarkhare/cursor-review-cli",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "AI-powered code review CLI for Cursor IDE",
     "main": "src/index.js",
     "bin": {
