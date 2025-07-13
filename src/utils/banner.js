@@ -37,3 +37,5 @@ async function showBanner() {
   // Add a small delay for effect
   await new Promise(resolve => setTimeout(resolve, 1000));
 }
+
+module.exports = { showBanner };
