@@ -2,6 +2,7 @@ const axios = require('axios');
 const fs = require('fs');
 const path = require('path');
 const { getCurrentCommitHash } = require('./git');
+const { execSync } = require('child_process');
 
 // Load environment variables from multiple sources
 function loadEnvVariables() {
@@ -43,21 +44,30 @@ function loadEnvVariables() {
 }
 
 async function postToGitHub(reviewState) {
-  // Load environment variables
   loadEnvVariables();
   
   const token = process.env.GITHUB_TOKEN;
   const repo = process.env.GITHUB_REPOSITORY || 'atlanhq/atlan-frontend';
   
   if (!token) {
-    throw new Error(`GITHUB_TOKEN not found. Please add it to one of these files:
+    throw new Error(`GITHUB_TOKEN not found... Please add it to one of these files:
     - .env
     - .env.local  
     - .env.development
     - .env.production
     - ~/.npmrc (as //npm.pkg.github.com/:_authToken=TOKEN)`);
   }
-  
+
+  // Check if we're ahead of remote
+  try {
+    const aheadCount = execSync('git rev-list --count HEAD ^origin/HEAD', { encoding: 'utf8' }).trim();
+    if (parseInt(aheadCount) > 0) {
+      console.warn(`Warning: You have ${aheadCount} unpushed commits. Consider pushing before posting status.`);
+    }
+  } catch (e) {
+    console.warn('Could not check if commits are pushed. Proceeding anyway...');
+  }
+
   const [owner, repoName] = repo.split('/');
   const commitHash = await getCurrentCommitHash();
   

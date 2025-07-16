@@ -24,7 +24,6 @@
       "figlet": "^1.7.0",
       "gradient-string": "^2.0.2",
       "ora": "^5.4.1",
-      "inquirer": "^8.2.6",
       "commander": "^11.1.0",
       "simple-git": "^3.20.0",
       "axios": "^1.6.2"

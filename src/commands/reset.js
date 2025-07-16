@@ -1,24 +1,8 @@
 const chalk = require('chalk');
 const { clearReviewState } = require('../utils/state');
-const inquirer = require('inquirer');
 
 async function resetReview() {
   console.log(chalk.cyan.bold('\n🔄 Reset Review Session'));
-  
-  // Confirm reset
-  const { confirm } = await inquirer.prompt([
-    {
-      type: 'confirm',
-      name: 'confirm',
-      message: 'Are you sure you want to reset the current review session?',
-      default: false
-    }
-  ]);
-  
-  if (!confirm) {
-    console.log(chalk.yellow('Reset cancelled.'));
-    return;
-  }
   
   try {
     await clearReviewState();

@@ -37,8 +37,75 @@ async function getCurrentBranch() {
   }
 }
 
+async function addGitNote(message, commitHash = 'HEAD') {
+  try {
+    // Escape the message for shell execution
+    const escapedMessage = message.replace(/'/g, "'\"'\"'");
+    const command = `git notes add -m '${escapedMessage}' ${commitHash}`;
+    execSync(command, { encoding: 'utf8' });
+    return true;
+  } catch (error) {
+    if (error.message.includes('Cannot add notes. Found existing notes')) {
+      throw new Error('Note already exists for this commit. Use --force to overwrite or remove the existing note first.');
+    }
+    throw new Error(`Failed to add git note: ${error.message}`);
+  }
+}
+
+async function appendGitNote(message, commitHash = 'HEAD') {
+  try {
+    const escapedMessage = message.replace(/'/g, "'\"'\"'");
+    const command = `git notes append -m '${escapedMessage}' ${commitHash}`;
+    execSync(command, { encoding: 'utf8' });
+    return true;
+  } catch (error) {
+    throw new Error(`Failed to append git note: ${error.message}`);
+  }
+}
+
+async function removeGitNote(commitHash = 'HEAD') {
+  try {
+    const command = `git notes remove ${commitHash}`;
+    execSync(command, { encoding: 'utf8' });
+    return true;
+  } catch (error) {
+    if (error.message.includes('No note found')) {
+      throw new Error('No note found for this commit.');
+    }
+    throw new Error(`Failed to remove git note: ${error.message}`);
+  }
+}
+
+async function showGitNote(commitHash = 'HEAD') {
+  try {
+    const command = `git notes show ${commitHash}`;
+    const output = execSync(command, { encoding: 'utf8' });
+    return output.trim();
+  } catch (error) {
+    if (error.message.includes('No note found')) {
+      return null;
+    }
+    throw new Error(`Failed to show git note: ${error.message}`);
+  }
+}
+
+async function listGitNotes() {
+  try {
+    const command = 'git notes list';
+    const output = execSync(command, { encoding: 'utf8' });
+    return output.trim().split('\n').filter(line => line.length > 0);
+  } catch (error) {
+    return [];
+  }
+}
+
 module.exports = {
   getChangedFiles,
   getCurrentCommitHash,
-  getCurrentBranch
+  getCurrentBranch,
+  addGitNote,
+  appendGitNote,
+  removeGitNote,
+  showGitNote,
+  listGitNotes
 };
