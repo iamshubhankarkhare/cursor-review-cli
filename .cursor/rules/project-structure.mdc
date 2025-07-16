@@ -1,0 +1,30 @@
+---
+alwaysApply: true
+---
+
+# Cursor Review CLI Project Structure
+
+This is a Node.js CLI tool for AI-powered code reviews with GitHub integration.
+
+## Main Entry Points
+- [src/index.js](mdc:src/index.js) - Main CLI entry point
+- [package.json](mdc:package.json) - Project dependencies and scripts
+
+## Architecture
+- **Commands**: [src/commands/](mdc:src/commands/) - Individual CLI command implementations
+- **Utilities**: [src/utils/](mdc:src/utils/) - Shared utility modules
+  - [src/utils/github.js](mdc:src/utils/github.js) - GitHub API integration
+  - [src/utils/git.js](mdc:src/utils/git.js) - Git operations
+  - [src/utils/state.js](mdc:src/utils/state.js) - State management
+  - [src/utils/banner.js](mdc:src/utils/banner.js) - CLI banner/UI
+
+## Command Structure
+Each command in [src/commands/](mdc:src/commands/) follows a consistent pattern:
+- `config.js` - Configuration management
+- `start.js` - Begin review process
+- `mark.js` - Mark files as reviewed
+- `note.js` - Add review notes
+- `status.js` - Show review status
+- `verify.js` - Verify review completion
+- `finalize.js` - Complete review process
+- `reset.js` - Reset review state

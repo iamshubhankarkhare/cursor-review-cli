@@ -1,0 +1,32 @@
+---
+globs: src/commands/*.js
+---
+
+# CLI Command Standards
+
+## Command Module Pattern
+Each command file in [src/commands/](mdc:src/commands/) should:
+- Export a main function that accepts parsed CLI arguments
+- Handle its own error cases with descriptive messages
+- Use utilities from [src/utils/](mdc:src/utils/) for shared functionality
+- Follow consistent naming: action-based verbs (start, mark, note, verify, finalize, reset)
+
+## State Management
+- Use [src/utils/state.js](mdc:src/utils/state.js) for persistent state operations
+- Commands should be idempotent when possible
+- Validate state before performing operations
+
+## Git Integration
+- Use [src/utils/git.js](mdc:src/utils/git.js) for all git operations
+- Check for uncommitted changes before major operations
+- Provide warnings for unpushed commits (like in [src/utils/github.js](mdc:src/utils/github.js))
+
+## User Feedback
+- Use [src/utils/banner.js](mdc:src/utils/banner.js) for consistent CLI output formatting
+- Provide progress indicators for long-running operations
+- Use console.warn() for non-blocking issues, console.error() for failures
+
+## GitHub Integration
+- Use [src/utils/github.js](mdc:src/utils/github.js) for API interactions
+- Handle authentication gracefully with helpful error messages
+- Respect rate limits and provide retry logic where appropriate

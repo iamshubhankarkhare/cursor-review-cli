@@ -1,0 +1,33 @@
+---
+globs: src/**/*.js
+---
+
+# Module Organization Standards
+
+## Import/Require Patterns
+Order dependencies as shown in [src/utils/github.js](mdc:src/utils/github.js):
+1. External packages (axios, fs, path)
+2. Internal utilities (./git, ./state)
+3. Node.js built-ins (child_process, etc.)
+
+## Utility Module Design
+- Keep utilities focused and single-purpose
+- Export only what's needed: `module.exports = { functionName }`
+- Use descriptive function names that indicate their purpose
+- Include comprehensive error handling within utility functions
+
+## File Size Guidelines
+- Keep files under 300 lines when possible
+- Split large utilities into focused sub-modules
+- Group related functions in the same file (like env loading functions)
+
+## Function Organization
+- Put helper/private functions before main exported functions
+- Use async/await consistently rather than mixing with Promises
+- Include input validation at the start of functions
+
+## Cross-Module Dependencies
+- Utils should not depend on commands
+- Commands can depend on utils
+- Avoid circular dependencies between utility modules
+- Use dependency injection for testability

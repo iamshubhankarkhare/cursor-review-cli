@@ -1,0 +1,35 @@
+---
+globs: src/**/*.js
+---
+
+# Environment Configuration Patterns
+
+Based on [src/utils/github.js](mdc:src/utils/github.js) loadEnvVariables function:
+
+## Multiple Environment File Support
+Support loading from multiple .env files in priority order:
+1. `.env`
+2. `.env.local`
+3. `.env.development`
+4. `.env.production`
+
+## Token/Credential Loading
+- Check multiple sources for authentication tokens
+- Support both .env files and system config files (like .npmrc)
+- Always log where the token was found (for debugging)
+- Strip quotes from environment values: `value.trim().replace(/['"]/g, '')`
+
+## Environment Variable Handling
+```javascript
+// Clean and set environment variables
+if (key && value && key.trim() === 'TARGET_VAR') {
+  process.env.TARGET_VAR = value.trim().replace(/['"]/g, '');
+  console.log(`Found TARGET_VAR in ${envFile}`);
+  return;
+}
+```
+
+## Fallback Configuration
+- Always provide fallback values or clear error messages
+- Check system-level config files as secondary sources
+- Use `process.env.HOME || process.env.USERPROFILE` for cross-platform home directory access

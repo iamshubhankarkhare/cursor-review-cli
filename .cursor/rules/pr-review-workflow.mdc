@@ -1,0 +1,228 @@
+---
+description: Enhanced AI-driven PR review workflow with comprehensive documentation and detailed issue tracking
+globs: ['*']
+alwaysApply: false
+---
+
+# Enhanced PR Review Workflow Orchestrator
+
+You are an AI workflow orchestrator that manages the complete PR review process using cursor-review CLI and generates comprehensive review documentation. Execute commands sequentially and maintain detailed tracking of all issues found.
+
+## Review Documentation Structure
+
+## Enhanced Workflow Steps
+
+### Step 1: Reset & Initialize Review
+
+**Command:** `npx @iamshubhankarkhare/cursor-review-cli reset`
+
+**Actions:**
+
+1. Reset any existing review session
+2. Clean up previous state files
+3. Ensure clean starting point
+
+**Command:** `npx @iamshubhankarkhare/cursor-review-cli start`
+
+**Actions:**
+
+1. Execute the command and capture output
+2. Parse file list and metadata
+3. Initialize comprehensive review report by creating **@pr-review-summary.md** in .cursor folder using [pr-review-summary-template.mdc](mdc:.cursor/rules/pr-review-summary-template.mdc) as reference. Just add the boilerplate for now and when reviewing each batch keep updating this file
+4. Create file-by-file review template
+
+**Expected Output:**
+
+- Banner display
+- File count and list
+- Branch comparison info
+- Initialized review report
+
+### Step 2: Enhanced Batch Review Process
+
+For each batch of 2-3 files:
+
+**Git Analysis Commands:**
+
+```bash
+# Get detailed diff for review
+git diff develop <filename>
+
+# Get file statistics
+git log --oneline -10 <filename>
+
+# Get current file info
+git show HEAD:<filename> | head -20
+```
+
+**Review Protocol for Each File:**
+
+1. **Analyze Full Context**
+
+    - Review git diff output line by line
+    - Identify change patterns and scope
+    - Understand business logic modifications
+
+2. **Issue Classification System**
+
+    - **🔴 Critical:** Security, performance, breaking changes
+    - **🟡 Major:** Logic errors, poor practices, maintainability
+    - **🟢 Minor:** Style, naming, documentation
+    - **💡 Suggestions:** Optimizations, best practices
+
+3. **Detailed Issue Documentation**
+   For each issue found, continuously update **@pr-review-summary.md**.
+
+4. **Apply Review Guidelines**
+    - Use standards defined in [pr-review-guidelines.mdc](mdc:.cursor/rules/.pr-review-guidelines.mdc)
+    - Check against coding standards
+    - Validate security practices
+    - Assess performance implications
+    - feel free to run eslint and TS check on the diff
+    - mark the files as reviewed
+
+**Command After Batch:** `npx @iamshubhankarkhare/cursor-review-cli mark <file1> <file2> <file3> --batch-id=<N>`
+
+**Progress Update:**
+
+- Update **@pr-review-summary.md** with findings from current batch
+- Maintain running issue count
+- Track completion percentage
+
+### Step 3: Comprehensive Status Check
+
+**Command:** `npx @iamshubhankarkhare/cursor-review-cli status`
+
+**Enhanced Actions:**
+
+1. Verify all files processed
+2. Generate interim report summary
+3. Validate issue classifications
+4. Check for missed files or edge cases
+
+### Step 4: Generate Final Report & Finalize
+
+**Command:** `npx @iamshubhankarkhare/cursor-review-cli finalize`
+
+**Final Report Generation:**
+
+1. notifiy the user of completion and pr-review-summary.md. Show a short dashboard
+2. **Generate Metrics Dashboard**
+
+    ```markdown
+    ## Review Metrics
+
+    - **Total Lines Changed:** [X]
+    - **Files Modified:** [X]
+    - **Issues Found:** [X]
+    - **Issue Density:** [issues per 100 lines]
+    - **Critical Issues:** [X]
+    - **Average Issue Severity:** [score]
+    ```
+
+### Step 5: Verify Completion
+
+**Command:** `npx @iamshubhankarkhare/cursor-review-cli verify`
+
+**Expected Output:**
+
+- Verification status summary
+- Completion confirmation
+- Any missing items or errors
+- Final review validation
+
+## Command Execution Protocol
+
+### Execute with Enhanced Logging
+
+- Capture all command output
+- Log timestamps for each step
+- Track file processing time
+- Monitor for CLI errors or issues
+
+### Error Handling & Recovery
+
+```bash
+# If command fails, provide diagnostics
+npx @iamshubhankarkhare/cursor-review-cli status --verbose
+git status --porcelain
+git log --oneline -5
+```
+
+### Progress Tracking
+
+Maintain real-time progress updates:
+
+- Files processed: X/Y
+- Issues found: X (Critical: X, Major: X, Minor: X)
+- Estimated completion time
+- Current batch being processed
+
+## Success Criteria
+
+### Technical Completion
+
+- ✅ All files processed through CLI workflow
+- ✅ All issues documented with details in **@pr-review-summary.md**
+- ✅ Report generated with comprehensive findings
+- ✅ GitHub status updated successfully
+- ✅ Verification command confirms completion
+
+### Quality Standards
+
+- ✅ Each issue has: line number, code snippet, fix, severity
+- ✅ Issues are properly categorized and prioritized
+- ✅ Report is actionable and developer-friendly
+- ✅ Metrics provide meaningful insights
+
+Execute this enhanced workflow systematically, ensuring comprehensive documentation of every finding and maintaining high standards for issue tracking and reporting.
+
+---
+
+Read file: src/index.js
+
+## **📋 All Available CLI Commands**
+
+### **🚀 Core Review Commands**
+
+```bash
+cursor-review start              # Start the AI code review process
+cursor-review mark <files...>    # Mark files as reviewed
+cursor-review status             # Show current review status
+cursor-review finalize [message] # Finalize review and post to GitHub (with optional git note)
+cursor-review reset              # Reset the current review session
+cursor-review cleanup            # Clean up review files and temporary data
+```
+
+### **🔍 Verification Commands**
+
+```bash
+cursor-review verify-completion  # Verify if review is completed (for CI)
+cursor-review check-changes      # Check if files were modified after review
+```
+
+### **⚙️ Configuration Commands**
+
+```bash
+cursor-review config set <key> <value>  # Set a configuration value
+cursor-review config get [key]          # Get configuration value(s)
+cursor-review config reset              # Reset configuration to defaults
+cursor-review config list               # List all available configuration options
+```
+
+### **📝 Git Notes Commands**
+
+```bash
+cursor-review note add <message>        # Add a git note to a commit
+cursor-review note show                 # Show git note for a commit
+cursor-review note remove               # Remove git note from a commit
+cursor-review note list                 # List all git notes in the repository
+```
+
+### **📚 Help Commands**
+
+```bash
+cursor-review --help            # Show general help
+cursor-review <command> --help  # Show help for specific command
+cursor-review --version         # Show version information
+```

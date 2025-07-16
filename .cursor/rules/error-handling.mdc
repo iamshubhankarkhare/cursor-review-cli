@@ -1,0 +1,31 @@
+---
+globs: src/**/*.js
+---
+
+# Error Handling Standards
+
+Based on [src/utils/github.js](mdc:src/utils/github.js) patterns:
+
+## Error Messages
+- Provide specific, actionable error messages
+- Include context about what the user should do next
+- List multiple possible solutions when available
+
+Example from GitHub token loading:
+```javascript
+throw new Error(`GITHUB_TOKEN not found... Please add it to one of these files:
+    - .env
+    - .env.local  
+    - .env.development
+    - .env.production
+    - ~/.npmrc (as //npm.pkg.github.com/:_authToken=TOKEN)`);
+```
+
+## API Error Handling
+- Differentiate between response errors (4xx/5xx) and network errors
+- Include status codes and API response messages in error output
+- Use descriptive prefixes like "GitHub API Error:" or "Network Error:"
+
+## Graceful Degradation
+- Use try/catch with warnings for non-critical operations
+- Continue execution when possible, log warnings for issues that don't block core functionality
