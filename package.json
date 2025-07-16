@@ -1,34 +1,39 @@
 {
     "name": "@iamshubhankarkhare/cursor-review-cli",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "description": "AI-powered code review CLI for Cursor IDE",
     "main": "src/index.js",
     "bin": {
-      "cursor-review": "./src/index.js"
+        "cursor-review": "./src/index.js"
     },
     "scripts": {
-      "start": "node src/index.js",
-      "test": "echo \"Error: no test specified\" && exit 1"
+        "start": "node src/index.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "keywords": ["cursor", "ai", "code-review", "cli"],
+    "keywords": [
+        "cursor",
+        "ai",
+        "code-review",
+        "cli"
+    ],
     "author": "Shubhankar Khare",
     "license": "MIT",
     "files": [
-      "src/",
-      "rules/",
-      "README.md"
+        "src/",
+        "rules/",
+        "README.md"
     ],
     "dependencies": {
-      "chalk": "^4.1.2",
-      "boxen": "^5.1.2",
-      "figlet": "^1.7.0",
-      "gradient-string": "^2.0.2",
-      "ora": "^5.4.1",
-      "commander": "^11.1.0",
-      "simple-git": "^3.20.0",
-      "axios": "^1.6.2"
+        "chalk": "^4.1.2",
+        "boxen": "^5.1.2",
+        "figlet": "^1.7.0",
+        "gradient-string": "^2.0.2",
+        "ora": "^5.4.1",
+        "commander": "^11.1.0",
+        "simple-git": "^3.20.0",
+        "axios": "^1.6.2"
     },
     "engines": {
-      "node": ">=16.0.0"
+        "node": ">=16.0.0"
     }
-  }
+}
